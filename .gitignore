@@ -29,3 +29,6 @@ yarn-error.log*
 ._*
 .Spotlight-V100
 .Trashes
+
+# config files
+/backend/config/personalData.js

@@ -220,11 +220,74 @@ button:focus-visible {
 }
 
 .chatbot-container {
-  background: #1a1a1a;
+  background: #242424;
   border-radius: 8px;
   padding: 1rem;
   margin-top: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #3a3a3a;
+}
+
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  padding: 0 5px;
+}
+
+.close-button:hover {
+  color: #ffffff;
+}
+
+.user-message {
+  background: #2a2a2a;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 4px 0;
+  display: inline-block;
+  border: 1px solid #3a3a3a;
+}
+
+.bot-message {
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 4px 0;
+  display: inline-block;
+  border: 1px solid #3a3a3a;
+}
+
+.chatbot input {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.chatbot input::placeholder {
+  color: #888;
+}
+
+.chatbot button {
+  background: #646cff;
+  color: white;
+  border: none;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.chatbot button:hover {
+  background: #535bf2;
 }
 
 /* Mobile Styles */
@@ -286,7 +349,7 @@ button:focus-visible {
   .welcome-title {
     font-size: 2em;
   }
-  
+
   .chatbot {
     right: 50%;
     transform: translateX(50%);

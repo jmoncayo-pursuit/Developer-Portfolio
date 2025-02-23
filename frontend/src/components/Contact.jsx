@@ -11,7 +11,7 @@ function Contact() {
             target='_blank'
             rel='noopener noreferrer'
           >
-            Your Profile
+            My Profile
           </a>
         </p>
         <p>

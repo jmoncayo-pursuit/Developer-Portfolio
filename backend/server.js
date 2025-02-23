@@ -2,30 +2,62 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { personalInfo } from './config/personalData.js';
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash',
+  model: process.env.AI_MODEL || 'gemini-1.5-flash',
   generationConfig: {
-    temperature: 0.5,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 5500,
+    temperature: parseFloat(process.env.AI_TEMPERATURE) || 0.5,
+    topP: parseFloat(process.env.AI_TOP_P) || 0.95,
+    topK: parseInt(process.env.AI_TOP_K) || 40,
+    maxOutputTokens: parseInt(process.env.AI_MAX_TOKENS) || 5500,
   },
 });
 
 app.post('/api/generate-response', async (req, res) => {
   try {
-    const { userQuery } = req.body;
-    const prompt = `As an AI assistant representing this candidate, answer the following question: ${userQuery}`;
+    const { userQuery, currentPage, pageContent } = req.body;
 
-    const result = await model.generateContent(prompt);
+    const contextPrompt = `
+      You are an AI assistant for Jean Moncayo's portfolio website. 
+      Important: Jean uses he/him pronouns.
+      Current context: The user is on the "${currentPage}" page.
+      ${
+        pageContent
+          ? `This page contains: ${JSON.stringify(pageContent)}`
+          : ''
+      }
+      
+      About Jean:
+      - ${personalInfo.role} with background in ${
+      personalInfo.background
+    }
+      - Technical skills include: React, Node.js, Express, PostgreSQL
+      - Currently attending Pursuit Fellowship
+      - Focused on process improvement and user experience
+
+      When answering:
+      1. Use he/him pronouns
+      2. Label any quoted content with its source (Resume, About page, etc.)
+      3. Be specific about which section is being discussed
+      
+      Question: ${userQuery}
+    `;
+
+    const result = await model.generateContent(contextPrompt);
     const response = await result.response;
 
     res.json({ response: response.text() });
