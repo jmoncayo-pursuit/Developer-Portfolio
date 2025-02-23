@@ -1,7 +1,7 @@
 function Home() {
   return (
     <div className='home'>
-      <h1>Welcome to My Portfolio</h1>
+      <h1 className='welcome-title'>Welcome to My Portfolio</h1>
       <p>Full Stack Developer</p>
     </div>
   );
