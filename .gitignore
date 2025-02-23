@@ -36,3 +36,4 @@ yarn-error.log*
 # sensitive data
 /backend/config/personalData.js
 /backend/config/resumeData.js
+Template/
