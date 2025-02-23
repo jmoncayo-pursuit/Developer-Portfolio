@@ -4,11 +4,32 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const scrollToSection = (sectionId) => {
+    setIsOpen(false);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <nav className='navbar'>
       <div className='nav-container'>
         <div className='nav-brand'>
-          <Link to='/'>Jean Moncayo's Developer Portfolio</Link>
+          <a
+            href='#'
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('hero');
+            }}
+          >
+            <img
+              src='/assets/img/profile.png'
+              alt='Jean Moncayo'
+              className='nav-profile-pic'
+            />
+            <span>Jean Moncayo</span>
+          </a>
         </div>
 
         <button
@@ -22,18 +43,42 @@ function Navbar() {
         </button>
 
         <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <Link to='/' onClick={() => setIsOpen(false)}>
-            Home
-          </Link>
-          <Link to='/about' onClick={() => setIsOpen(false)}>
+          <a
+            href='#about'
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('about');
+            }}
+          >
             About
-          </Link>
-          <Link to='/projects' onClick={() => setIsOpen(false)}>
+          </a>
+          <a
+            href='#skills'
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('skills');
+            }}
+          >
+            Skills
+          </a>
+          <a
+            href='#projects'
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('projects');
+            }}
+          >
             Projects
-          </Link>
-          <Link to='/contact' onClick={() => setIsOpen(false)}>
+          </a>
+          <a
+            href='#contact'
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('contact');
+            }}
+          >
             Contact
-          </Link>
+          </a>
         </div>
       </div>
     </nav>
