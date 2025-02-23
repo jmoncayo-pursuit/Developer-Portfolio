@@ -11,6 +11,12 @@ function ChatBot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const [suggestions] = useState([
+    "What are Jean's main skills?",
+    "Tell me about Jean's projects",
+    "What's Jean's work experience?",
+    'How can I get in touch with Jean?',
+  ]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,6 +41,18 @@ function ChatBot() {
 
     marked.use({ renderer });
   }, []);
+
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      setMessages([
+        {
+          type: 'bot',
+          text: "👋 Hi! I'm an AI assistant who can tell you all about Jean's portfolio. Here are some things you can ask about:",
+          showSuggestions: true,
+        },
+      ]);
+    }
+  }, [isOpen]);
 
   const parseMarkdown = (text) => {
     if (!text) return '';
@@ -61,47 +79,112 @@ function ChatBot() {
     }
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setInput(suggestion);
+  };
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const generateResponse = (query) => {
+    query = query.toLowerCase();
+
+    if (
+      query.includes('hello') ||
+      query.includes('hi') ||
+      query.includes('hey')
+    ) {
+      return {
+        text: "Hello! I can help you learn about Jean's work and experience. What would you like to know?",
+        showSuggestions: false,
+      };
+    }
+
+    if (query.includes('project')) {
+      return {
+        text: `Jean's key project is the Mentorship Volunteer Platform (MVP):
+
+• Connects aspiring developers with experienced mentors
+• Built with React, Node.js, Express, and PostgreSQL
+• Features real-time chat using Socket.IO
+• Implements secure JWT authentication
+• Deployed on AWS with CI/CD pipeline
+
+Jean has several other projects that showcase different aspects of web development.`,
+        showSuggestions: false,
+      };
+    }
+
+    if (query.includes('experience') || query.includes('work')) {
+      return {
+        text: `Jean's professional experience includes:
+
+• Full Stack Developer Fellow at Pursuit (2023-Present)
+  - Develops complex web applications
+  - Collaborates in Agile teams
+  - Mentors junior developers
+
+• Has completed numerous freelance projects
+• Graduated from intensive 12-month software engineering fellowship
+• Actively contributes to open-source projects`,
+        showSuggestions: false,
+      };
+    }
+
+    if (query.includes('contact') || query.includes('touch')) {
+      return {
+        text: `You can reach Jean through:
+
+• Email: Jean.Moncayo@gmail.com
+• LinkedIn: Professional profile available for networking
+• GitHub: View Jean's code contributions and projects
+
+Jean is open to discussing new opportunities and collaborations!`,
+        showSuggestions: false,
+      };
+    }
+
+    // Default response
+    return {
+      text: "I can tell you about Jean's background, technical skills, projects, or provide contact information. What would you like to know?",
+      showSuggestions: false,
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
+    const userMessage = { type: 'user', text: input };
+    setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/generate-response`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userQuery: input,
-            currentPage,
-            pageContent: currentContent,
-          }),
-        }
-      );
 
-      const data = await response.json();
-      setMessages([
-        ...messages,
-        { type: 'user', text: input },
-        { type: 'bot', text: data.response },
+    try {
+      const response = generateResponse(input.toLowerCase());
+      setMessages((prev) => [
+        ...prev,
+        {
+          type: 'bot',
+          ...response,
+        },
       ]);
-      setInput('');
     } catch (error) {
       console.error('Error:', error);
-      setMessages([
-        ...messages,
-        { type: 'user', text: input },
+      setMessages((prev) => [
+        ...prev,
         {
           type: 'bot',
           text: "I'm sorry, I encountered an error. Please try again.",
+          showSuggestions: true,
         },
       ]);
-    } finally {
-      setIsLoading(false);
     }
+    setInput('');
+    setIsLoading(false);
   };
 
   return (
@@ -117,21 +200,41 @@ function ChatBot() {
           >
             ×
           </span>
+          <div className='chatbot-header'>
+            <i className='bi bi-stars'></i>
+            <h3>Portfolio AI Assistant</h3>
+          </div>
           <div className='messages'>
             {messages.map((msg, index) => (
               <div key={index} className={`message ${msg.type}`}>
                 {msg.type === 'user' ? (
-                  <span className='user-message'>
-                    You: {msg.text}
-                  </span>
+                  <div className='user-message'>
+                    <span>{msg.text}</span>
+                  </div>
                 ) : (
-                  <div
-                    className='bot-message'
-                    onClick={handleLinkClick}
-                    dangerouslySetInnerHTML={{
-                      __html: `AI: ${parseMarkdown(msg.text)}`,
-                    }}
-                  />
+                  <div className='bot-message'>
+                    <div
+                      className='message-content'
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(msg.text),
+                      }}
+                    />
+                    {msg.showSuggestions && (
+                      <div className='suggestion-chips'>
+                        {suggestions.map((suggestion, i) => (
+                          <button
+                            key={i}
+                            className='suggestion-chip'
+                            onClick={() =>
+                              handleSuggestionClick(suggestion)
+                            }
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             ))}
