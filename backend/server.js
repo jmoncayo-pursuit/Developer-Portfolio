@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { personalInfo } from './config/personalData.js';
+import { resumeData } from './config/resumeData.js';
 
 dotenv.config();
 
@@ -29,41 +30,53 @@ const model = genAI.getGenerativeModel({
 
 app.post('/api/generate-response', async (req, res) => {
   try {
-    const { userQuery, currentPage, pageContent } = req.body;
+    const { userQuery, currentPage } = req.body;
 
     const contextPrompt = `
-      You are an AI assistant for Jean Moncayo's portfolio website. 
-      Important: Jean uses he/him pronouns.
-      Current context: The user is on the "${currentPage}" page.
-      ${
-        pageContent
-          ? `This page contains: ${JSON.stringify(pageContent)}`
-          : ''
-      }
+      You are an AI assistant for Jean Moncayo's portfolio website.
+      Current page: "${currentPage || 'home'}"
       
-      About Jean:
-      - ${personalInfo.role} with background in ${
-      personalInfo.background
-    }
-      - Technical skills include: React, Node.js, Express, PostgreSQL
-      - Currently attending Pursuit Fellowship
-      - Focused on process improvement and user experience
+      IMPORTANT - When mentioning pages, ALWAYS use these exact link formats (do not modify them):
+      [Home](/) - Main overview
+      [About](/about) - Background info
+      [Projects](/projects) - Portfolio work
+      [Contact](/contact) - Contact details
 
-      When answering:
-      1. Use he/him pronouns
-      2. Label any quoted content with its source (Resume, About page, etc.)
-      3. Be specific about which section is being discussed
+      For example, say exactly:
+      "Check out the [Projects](/projects) page for his technical work."
+      "Visit the [Contact](/contact) page to get in touch."
       
-      Question: ${userQuery}
+      Rules:
+      1. Keep responses under 3 sentences
+      2. Use he/him pronouns
+      3. Always include at least one link in your response
+      4. Only use the exact link formats shown above
+      
+      Question: "${userQuery}"
     `;
 
     const result = await model.generateContent(contextPrompt);
-    const response = await result.response;
+    const responseText = result.response.text();
 
-    res.json({ response: response.text() });
+    // Check if the response contains any of the valid links
+    const validResponse = [
+      '/)',
+      '/about)',
+      '/projects)',
+      '/contact)',
+    ].some((link) => responseText.includes(link));
+
+    res.json({
+      response: validResponse
+        ? responseText
+        : `Visit the [Home](/) page to learn more about Jean's portfolio.`,
+    });
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to generate response' });
+    res.status(500).json({
+      response:
+        'I apologize, but I encountered an error. Please try again.',
+    });
   }
 });
 
