@@ -164,19 +164,15 @@ function ChatBot() {
   return (
     <div className={`chatbot ${isOpen ? 'open' : ''}`}>
       {isOpen && (
-        <div className='chatbot-container'>
+        <div className='chatbot-container shadow'>
           <span
-            className='close-button'
+            className='close-button btn-close'
             onClick={() => setIsOpen(false)}
             aria-label='Close chat'
-            role='button'
-            tabIndex={0}
-          >
-            ×
-          </span>
-          <div className='chatbot-header'>
-            <i className='bi bi-stars'></i>
-            <h3>Portfolio AI Assistant</h3>
+          />
+          <div className='chatbot-header bg-dark'>
+            <i className='bi bi-stars text-primary'></i>
+            <h3 className='h6 mb-0'>Portfolio AI Assistant</h3>
           </div>
           <div className='messages'>
             {messages.map((msg, index) => (
@@ -221,9 +217,10 @@ function ChatBot() {
             )}
             <div ref={messagesEndRef} />
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='mt-auto'>
             <input
               type='text'
+              className='form-control bg-dark text-light'
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={
@@ -231,7 +228,11 @@ function ChatBot() {
               }
               disabled={isLoading}
             />
-            <button type='submit' disabled={isLoading}>
+            <button
+              type='submit'
+              className='btn btn-primary w-90'
+              disabled={isLoading}
+            >
               {isLoading ? 'Thinking...' : 'Send'}
             </button>
           </form>
@@ -239,7 +240,7 @@ function ChatBot() {
       )}
       {!isOpen && (
         <button
-          className='chatbot-toggle'
+          className='chatbot-toggle btn btn-primary'
           onClick={() => setIsOpen(true)}
         >
           Ask me anything!
