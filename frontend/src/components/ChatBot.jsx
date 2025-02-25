@@ -90,69 +90,42 @@ function ChatBot() {
     }
   };
 
-  const generateResponse = (query) => {
-    query = query.toLowerCase();
+  const generateResponse = async (query) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/chat`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: query,
+            history: messages.map((msg) => ({
+              role: msg.type === 'user' ? 'user' : 'assistant',
+              content: msg.text,
+            })),
+          }),
+        }
+      );
 
-    if (
-      query.includes('hello') ||
-      query.includes('hi') ||
-      query.includes('hey')
-    ) {
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       return {
-        text: "Hello! I can help you learn about Jean's work and experience. What would you like to know?",
+        text: data.response,
         showSuggestions: false,
       };
-    }
-
-    if (query.includes('project')) {
+    } catch (error) {
+      console.error('Error:', error);
       return {
-        text: `Jean's key project is the Mentorship Volunteer Platform (MVP):
-
-• Connects aspiring developers with experienced mentors
-• Built with React, Node.js, Express, and PostgreSQL
-• Features real-time chat using Socket.IO
-• Implements secure JWT authentication
-• Deployed on AWS with CI/CD pipeline
-
-Jean has several other projects that showcase different aspects of web development.`,
-        showSuggestions: false,
+        text: "I'm sorry, I encountered an error. Please try again.",
+        showSuggestions: true,
       };
     }
-
-    if (query.includes('experience') || query.includes('work')) {
-      return {
-        text: `Jean's professional experience includes:
-
-• Full Stack Developer Fellow at Pursuit (2023-Present)
-  - Develops complex web applications
-  - Collaborates in Agile teams
-  - Mentors junior developers
-
-• Has completed numerous freelance projects
-• Graduated from intensive 12-month software engineering fellowship
-• Actively contributes to open-source projects`,
-        showSuggestions: false,
-      };
-    }
-
-    if (query.includes('contact') || query.includes('touch')) {
-      return {
-        text: `You can reach Jean through:
-
-• Email: Jean.Moncayo@gmail.com
-• LinkedIn: Professional profile available for networking
-• GitHub: View Jean's code contributions and projects
-
-Jean is open to discussing new opportunities and collaborations!`,
-        showSuggestions: false,
-      };
-    }
-
-    // Default response
-    return {
-      text: "I can tell you about Jean's background, technical skills, projects, or provide contact information. What would you like to know?",
-      showSuggestions: false,
-    };
   };
 
   const handleSubmit = async (e) => {
@@ -164,7 +137,7 @@ Jean is open to discussing new opportunities and collaborations!`,
     setIsLoading(true);
 
     try {
-      const response = generateResponse(input.toLowerCase());
+      const response = await generateResponse(input);
       setMessages((prev) => [
         ...prev,
         {
@@ -183,6 +156,7 @@ Jean is open to discussing new opportunities and collaborations!`,
         },
       ]);
     }
+
     setInput('');
     setIsLoading(false);
   };

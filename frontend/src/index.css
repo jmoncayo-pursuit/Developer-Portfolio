@@ -239,7 +239,7 @@ button:focus-visible {
 .chatbot-container {
   background: #242424;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 12px;
   margin-top: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #3a3a3a;
@@ -247,7 +247,10 @@ button:focus-visible {
   flex-direction: column;
   max-height: 66vh;
   position: relative !important;
-  padding-top: 40px !important;
+  padding-top: 0.25em !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .close-button {
@@ -313,15 +316,28 @@ button:focus-visible {
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
-  margin: 1.5rem -1rem 0; /* Increased top margin to account for close button */
+  padding: 12px;
+  margin: 0;
   max-height: calc(66vh - 120px);
   scrollbar-width: thin;
   scrollbar-color: #646cff #1a1a1a;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.messages:hover {
+  transform: scale(1.001);
+}
+
+.messages:active {
+  cursor: grabbing;
 }
 
 .messages::-webkit-scrollbar {
-  width: 8px;
+  width: 12px; /* Slightly wider for easier grabbing */
+  cursor: grab;
 }
 
 .messages::-webkit-scrollbar-track {
@@ -332,28 +348,44 @@ button:focus-visible {
 .messages::-webkit-scrollbar-thumb {
   background-color: #646cff;
   border-radius: 4px;
+  cursor: grab;
+  transition: background-color 0.2s ease;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background-color: #747bff;
+  width: 14px;
+}
+
+.messages::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+  background-color: #535bf2;
 }
 
 .message {
   margin-bottom: 1rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-message,
 .bot-message {
   max-width: 85%;
   word-wrap: break-word;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+  margin: 8px 0;
 }
 
 .user-message {
   background: #2a2a2a;
   color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 12px;
-  margin: 4px 0;
-  display: inline-block;
-  border: 1px solid #3a3a3a;
   margin-left: auto;
+  padding-right: 12px;
+  align-self: flex-end;
+  margin-right: 0;
 }
 
 .bot-message {
@@ -364,6 +396,9 @@ button:focus-visible {
   margin: 4px 0;
   max-width: 85%;
   border: 1px solid #3a3a3a;
+  margin-right: 12px;
+  align-self: flex-start;
+  margin-left: 0;
 }
 
 .message-content {
@@ -414,10 +449,11 @@ button:focus-visible {
   background: #1a1a1a;
   color: #ffffff;
   border: 1px solid #3a3a3a;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 12px;
   width: 100%;
-  margin-top: 10px;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .chatbot input::placeholder {
@@ -430,6 +466,8 @@ button:focus-visible {
   border: none;
   margin-top: 8px;
   width: 100%;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .chatbot button:hover {
@@ -440,8 +478,13 @@ button:focus-visible {
   position: sticky;
   bottom: 0;
   background: #242424;
-  padding-top: 1rem;
+  padding: 12px;
   margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* Add loading indicator styles */
@@ -840,23 +883,22 @@ main {
   position: fixed;
   right: 20px;
   bottom: calc(
-    2rem + 60px
-  ); /* Position above the chat button (2rem matches chatbot bottom + extra space) */
-  background: rgba(100, 108, 255, 0.8);
+    70vh + 1rem
+  ); /* Move higher above the chat container */
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 20px;
   color: white;
+  background: rgba(100, 108, 255, 0.8);
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 1001;
-  opacity: 0;
-  visibility: hidden;
-  transition: bottom 0.3s ease; /* Smooth transition for position change */
+  aspect-ratio: 1; /* Ensure perfect circle */
+  padding: 0; /* Remove any padding that might affect shape */
 }
 
 .scroll-to-top.visible {
@@ -878,11 +920,13 @@ main {
   .scroll-to-top {
     right: 20px;
     transform: none;
-    bottom: calc(1rem + 60px); /* Match chatbot's mobile position */
+    bottom: calc(55vh + 1rem); /* Adjust for mobile */
   }
 
   .chatbot.open ~ .scroll-to-top {
-    bottom: calc(50vh + 2rem); /* Adjust for smaller mobile chatbox */
+    bottom: calc(
+      55vh + 1rem
+    ); /* Keep position consistent when chat is open */
   }
 }
 
@@ -1089,9 +1133,8 @@ section {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 15px;
-  border-bottom: 1px solid #3a3a3a;
-  margin-bottom: 15px;
+  padding: 4px 15px; /* Reduce vertical padding */
+  margin-bottom: 8px; /* Reduce bottom margin */
 }
 
 .assistant-avatar {
