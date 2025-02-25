@@ -31,7 +31,11 @@ function App() {
           <i className='bi bi-arrow-up'></i>
         </button>
 
-        <footer id='footer'>
+        <footer
+          id='footer'
+          className='position-relative bg-dark'
+         
+        >
           <div className='container'>
             <div className='copyright'>
               &copy; {new Date().getFullYear()}{' '}

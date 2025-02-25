@@ -10,6 +10,11 @@
   --bs-body-color: rgba(255, 255, 255, 0.87) !important;
   --bs-btn-close-color: rgba(255, 255, 255, 0.87) !important;
   --bs-btn-close-hover-opacity: 1 !important;
+
+  --theme-primary: #646cff;
+  --theme-primary-hover: #535bf2;
+  --theme-dark: #1a1a1a;
+  --theme-darker: #242424;
 }
 
 body {
@@ -228,11 +233,11 @@ button:focus-visible {
 .chatbot {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
-  z-index: 996;
+  z-index: 1500; /* Much higher z-index to be above everything */
   max-width: 400px;
   width: 90%;
   margin: 0 2rem;
+  pointer-events: all; /* Enable click events */
 }
 
 .chatbot-container {
@@ -297,6 +302,9 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  background: transparent
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e")
+    center/1em auto no-repeat !important;
 }
 
 .btn-close:hover {
@@ -327,28 +335,23 @@ button:focus-visible {
 }
 
 .messages::-webkit-scrollbar {
-  width: 12px; 
+  width: 12px;
   cursor: grab;
 }
 
 .messages::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--theme-dark);
   border-radius: 4px;
 }
 
 .messages::-webkit-scrollbar-thumb {
-  background-color: #646cff;
+  background-color: var(--theme-primary);
   border-radius: 4px;
-  cursor: grab;
   transition: background-color 0.2s ease;
 }
 
 .messages::-webkit-scrollbar-thumb:hover {
   background-color: #747bff;
-  width: 14px;
-}
-
-.messages::-webkit-scrollbar-thumb:active {
   cursor: grabbing;
   background-color: #535bf2;
 }
@@ -457,6 +460,14 @@ button:focus-visible {
   margin: 0 auto;
 }
 
+.chatbot button.btn-primary {
+  background: #646cff !important;
+  color: white;
+  border: none;
+  transition: opacity 0.3s ease;
+  pointer-events: auto; /* Ensure clicks are captured */
+}
+
 .chatbot form {
   background: #242424;
   padding: 12px;
@@ -546,7 +557,7 @@ button:focus-visible {
 
   .nav-links {
     position: fixed;
-    top: 70px; 
+    top: 70px;
     left: 0;
     right: 0;
     background-color: rgba(26, 26, 26, 0.95);
@@ -597,7 +608,7 @@ button:focus-visible {
   }
 
   .chatbot-container {
-    max-height: 50vh; 
+    max-height: 50vh;
   }
 
   .messages {
@@ -880,16 +891,16 @@ main {
 .scroll-to-top {
   position: fixed;
   right: 2rem;
-  bottom: 5rem; 
-  width: 32px; 
+  bottom: 5rem;
+  width: 32px;
   height: 32px;
   font-size: 16px;
   background: rgba(100, 108, 255, 0.8);
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 995; 
+  z-index: 995;
   aspect-ratio: 1;
-  padding: 0; 
+  padding: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -913,7 +924,7 @@ main {
 }
 
 .chatbot.open ~ .scroll-to-top {
-  bottom: calc(66vh + 1rem); 
+  bottom: calc(66vh + 1rem);
 }
 
 @media (max-width: 768px) {
@@ -1191,6 +1202,11 @@ section {
   box-shadow: 0 0 0 0.25rem rgba(100, 108, 255, 0.25) !important;
 }
 
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  opacity: 1;
+}
+
 .btn {
   padding: 8px 16px !important;
 }
@@ -1227,4 +1243,20 @@ h6,
 #footer .container {
   display: flex;
   justify-content: center;
+}
+
+.theme-btn {
+  background-color: #646cff !important;
+  border-color: #646cff !important;
+}
+
+.theme-btn:hover {
+  background-color: #535bf2 !important;
+  border-color: #535bf2 !important;
+}
+
+#footer {
+  position: relative;
+  z-index: 1000; /* Lower z-index than chatbot */
+  background-color: #1a1a1a;
 }
