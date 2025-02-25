@@ -1,6 +1,5 @@
 import { BrowserRouter as Router } from 'react-router-dom';
 import { NavigationProvider } from './context/NavigationContext';
-import { PageWrapper } from './components/PageWrapper';
 import Home from './components/Home';
 import About from './components/About';
 import Projects from './components/Projects';
@@ -31,11 +30,7 @@ function App() {
           <i className='bi bi-arrow-up'></i>
         </button>
 
-        <footer
-          id='footer'
-          className='position-relative bg-dark'
-         
-        >
+        <footer id='footer' className='position-relative bg-dark'>
           <div className='container'>
             <div className='copyright'>
               &copy; {new Date().getFullYear()}{' '}

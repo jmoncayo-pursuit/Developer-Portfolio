@@ -28,47 +28,63 @@ function Home({ pageName }) {
 
   return (
     <>
-      <section id='hero' className='d-flex align-items-center'>
-        <div className='hero-container'>
+      <section
+        id='hero'
+        className='min-vh-100 d-flex align-items-center position-relative bg-dark overflow-hidden'
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url("/assets/img/hero-bg.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className='container text-center'>
           <img
             src='/assets/img/profile.png'
             alt='Jean Moncayo'
-            className='profile-img'
+            className='rounded-circle border border-4 border-opacity-25 mb-4'
+            style={{
+              width: '150px',
+              height: '150px',
+              objectFit: 'cover',
+            }}
           />
-          <h1>Jean Moncayo</h1>
-          <h2>Full Stack Developer</h2>
-          <nav className='nav-menu'>
-            <ul>
+          <h1 className='display-3 fw-bold mb-4 text-white'>
+            Jean Moncayo
+          </h1>
+          <p className='lead mb-5 text-white-50'>
+            Full Stack Developer
+          </p>
+
+          <nav className='mt-5'>
+            <ul className='list-unstyled d-flex justify-content-center gap-4 flex-wrap'>
               <li>
-                <a href='#about'>About</a>
+                <a
+                  href='#about'
+                  className='btn btn-outline-light rounded-pill px-4 py-2'
+                >
+                  About
+                </a>
               </li>
               <li>
-                <a href='#skills'>Skills</a>
+                <a
+                  href='#projects'
+                  className='btn btn-outline-light rounded-pill px-4 py-2'
+                >
+                  Projects
+                </a>
               </li>
               <li>
-                <a href='#projects'>Projects</a>
-              </li>
-              <li>
-                <a href='#contact'>Contact</a>
+                <a
+                  href='#contact'
+                  className='btn btn-outline-light rounded-pill px-4 py-2'
+                >
+                  Contact
+                </a>
               </li>
             </ul>
           </nav>
-          <div className='social-links'>
-            <a
-              href={import.meta.env.VITE_LINKEDIN_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <i className='bi bi-linkedin'></i>
-            </a>
-            <a
-              href={import.meta.env.VITE_GITHUB_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <i className='bi bi-github'></i>
-            </a>
-          </div>
         </div>
       </section>
 

@@ -162,50 +162,71 @@ function ChatBot() {
   };
 
   return (
-    <div className={`chatbot ${isOpen ? 'open' : ''}`}>
+    <div
+      className={`position-fixed bottom-0 start-0 mb-4 ms-4 ${
+        isOpen ? 'open' : ''
+      }`}
+      style={{ zIndex: 1050 }} // Higher z-index to be above footer
+    >
       {isOpen && (
-        <div className='chatbot-container shadow'>
-          <span
-            className='close-button btn-close'
+        <div className='bg-dark rounded border border-secondary shadow p-3 position-relative'>
+          <button
+            className='btn-close position-absolute top-0 end-0 m-3 text-white opacity-75'
             onClick={() => setIsOpen(false)}
             aria-label='Close chat'
+            style={{ filter: 'brightness(2)' }}
           />
-          <div className='chatbot-header bg-dark'>
-            <i className='bi bi-stars text-primary'></i>
+          <div className='d-flex align-items-center gap-2 border-bottom border-secondary pb-2 mb-3'>
+            <i
+              className='bi bi-stars fs-5'
+              style={{ color: '#646cff' }}
+            ></i>
             <h3 className='h6 mb-0'>Portfolio AI Assistant</h3>
           </div>
-          <div className='messages'>
+
+          <div
+            className='overflow-auto mb-3'
+            style={{ maxHeight: 'calc(66vh - 180px)' }}
+          >
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.type}`}>
-                {msg.type === 'user' ? (
-                  <div className='user-message'>
-                    <span>{msg.text}</span>
-                  </div>
-                ) : (
-                  <div className='bot-message'>
-                    <div
-                      className='message-content'
-                      dangerouslySetInnerHTML={{
-                        __html: parseMarkdown(msg.text),
-                      }}
-                    />
-                    {msg.showSuggestions && (
-                      <div className='suggestion-chips'>
-                        {suggestions.map((suggestion, i) => (
-                          <button
-                            key={i}
-                            className='suggestion-chip'
-                            onClick={() =>
-                              handleSuggestionClick(suggestion)
-                            }
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+              <div
+                key={index}
+                className={`d-flex ${
+                  msg.type === 'user'
+                    ? 'justify-content-end'
+                    : 'justify-content-start'
+                }`}
+              >
+                <div
+                  className={`p-3 rounded-4 my-2 ${
+                    msg.type === 'user'
+                      ? 'bg-opacity-25 bg-light ms-auto'
+                      : 'bg-dark border border-secondary'
+                  }`}
+                  style={{ maxWidth: '85%' }}
+                >
+                  <div
+                    className='message-content'
+                    dangerouslySetInnerHTML={{
+                      __html: parseMarkdown(msg.text),
+                    }}
+                  />
+                  {msg.showSuggestions && (
+                    <div className='suggestion-chips'>
+                      {suggestions.map((suggestion, i) => (
+                        <button
+                          key={i}
+                          className='suggestion-chip'
+                          onClick={() =>
+                            handleSuggestionClick(suggestion)
+                          }
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             {isLoading && (
@@ -217,10 +238,12 @@ function ChatBot() {
             )}
             <div ref={messagesEndRef} />
           </div>
+
           <form onSubmit={handleSubmit} className='mt-auto'>
             <input
               type='text'
-              className='form-control bg-dark text-light'
+              className='form-control bg-dark text-light mb-2'
+              style={{ display: 'block', width: '100%' }}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={
@@ -228,20 +251,23 @@ function ChatBot() {
               }
               disabled={isLoading}
             />
-            <button
-              type='submit'
-              className='btn btn-primary w-90'
-              disabled={isLoading}
-            >
-              {isLoading ? 'Thinking...' : 'Send'}
-            </button>
+            <div className='d-flex justify-content-center'>
+              <button
+                type='submit'
+                className='btn rounded-pill w-75'
+                style={{ backgroundColor: '#646cff', color: 'white' }}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Thinking...' : 'Send'}
+              </button>
+            </div>
           </form>
         </div>
       )}
       {!isOpen && (
         <button
-          className='chatbot-toggle btn btn-primary'
           onClick={() => setIsOpen(true)}
+          className='btn btn-primary rounded-pill shadow-sm px-4 py-2 ms-4 theme-btn'
         >
           Ask me anything!
         </button>

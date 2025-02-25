@@ -1260,3 +1260,11 @@ h6,
   z-index: 1000; /* Lower z-index than chatbot */
   background-color: #1a1a1a;
 }
+
+.hover-underline:hover {
+  text-decoration: underline !important;
+}
+
+.hover-primary:hover {
+  color: var(--theme-primary) !important;
+}

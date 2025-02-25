@@ -4,81 +4,81 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const scrollToSection = (sectionId) => {
-    setIsOpen(false);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <nav className='navbar'>
-      <div className='nav-container'>
-        <div className='nav-brand'>
-          <a
-            href='#'
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('hero');
+    <nav className='navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-95 fixed-top shadow-sm'>
+      <div className='container'>
+        <Link
+          to='/'
+          className='navbar-brand d-flex align-items-center gap-3'
+        >
+          <img
+            src='/assets/img/profile.png'
+            alt='Jean Moncayo'
+            className='rounded-circle'
+            style={{
+              width: '32px',
+              height: '32px',
+              objectFit: 'cover',
             }}
-          >
-            <img
-              src='/assets/img/profile.png'
-              alt='Jean Moncayo'
-              className='nav-profile-pic'
-            />
-            <span>Jean Moncayo</span>
-          </a>
-        </div>
+          />
+          <span>Jean Moncayo's Portfolio</span>
+        </Link>
 
         <button
-          className={`hamburger ${isOpen ? 'active' : ''}`}
+          className='navbar-toggler border-0'
+          type='button'
           onClick={() => setIsOpen(!isOpen)}
-          aria-label='menu'
+          aria-controls='navbarNav'
+          aria-expanded={isOpen}
+          aria-label='Toggle navigation'
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span className='navbar-toggler-icon'></span>
         </button>
 
-        <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <a
-            href='#about'
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('about');
-            }}
-          >
-            About
-          </a>
-          <a
-            href='#skills'
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('skills');
-            }}
-          >
-            Skills
-          </a>
-          <a
-            href='#projects'
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('projects');
-            }}
-          >
-            Projects
-          </a>
-          <a
-            href='#contact'
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('contact');
-            }}
-          >
-            Contact
-          </a>
+        <div
+          className={`collapse navbar-collapse ${
+            isOpen ? 'show' : ''
+          }`}
+          id='navbarNav'
+        >
+          <ul className='navbar-nav ms-auto'>
+            <li className='nav-item'>
+              <Link
+                to='/'
+                className='nav-link px-3'
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/about'
+                className='nav-link px-3'
+                onClick={() => setIsOpen(false)}
+              >
+                About
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/projects'
+                className='nav-link px-3'
+                onClick={() => setIsOpen(false)}
+              >
+                Projects
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/contact'
+                className='nav-link px-3'
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>

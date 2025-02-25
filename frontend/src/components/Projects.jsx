@@ -1,57 +1,46 @@
 function Projects() {
   return (
-    <div className='projects'>
-      <h2>My Projects</h2>
-      <div className='projects-grid'>
-        <div className='project-card'>
-          <h3>Mentorship Volunteer Platform (MVP)</h3>
-          <p>
-            A mentorship app connecting aspiring web developers with
-            experienced mentors. Features integrated chat and task
-            assignments to support learning and growth.
-          </p>
-          <div className='project-details'>
-            <h4>Key Achievements:</h4>
-            <ul>
-              <li>
-                Delivered Agile-driven features with Trello task
-                coordination
-              </li>
-              <li>
-                Engineered real-time chat using Socket.IO/Node.js
-              </li>
-              <li>Implemented secure JWT/bcrypt authentication</li>
-              <li>
-                Optimized PostgreSQL for efficient data management
-              </li>
-            </ul>
-            <h4>Tech Stack:</h4>
-            <div className='tech-stack'>
-              <span>React</span>
-              <span>PostgreSQL</span>
-              <span>Express</span>
-              <span>Node.js</span>
+    <section id='projects' className='py-5'>
+      <div className='container'>
+        <h2 className='text-center display-4 mb-5'>Projects</h2>
+
+        <div className='row g-4'>
+          <div className='col-md-6'>
+            <div className='card bg-dark border-secondary h-100'>
+              <div className='card-body'>
+                <h3 className='card-title h4 text-primary mb-3'>
+                  Mentorship Platform
+                </h3>
+                <p className='card-text text-light-emphasis'>
+                  A comprehensive platform connecting developers with
+                  mentors
+                </p>
+                <div className='d-flex flex-wrap gap-2 mb-3'>
+                  <span className='badge bg-secondary'>React</span>
+                  <span className='badge bg-secondary'>Node.js</span>
+                  <span className='badge bg-secondary'>
+                    PostgreSQL
+                  </span>
+                </div>
+                <div className='d-flex gap-2 mt-auto'>
+                  <a
+                    href='#'
+                    className='btn btn-outline-primary btn-sm'
+                  >
+                    <i className='bi bi-github me-2'></i>Code
+                  </a>
+                  <a href='#' className='btn btn-primary btn-sm'>
+                    <i className='bi bi-box-arrow-up-right me-2'></i>
+                    Live
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-          <div className='project-links'>
-            <a
-              href='https://github.com/eivor9/mvp-frontend'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              GitHub
-            </a>
-            <a
-              href='https://mentorvolunteerplatform.netlify.app/'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Live Demo
-            </a>
-          </div>
+          {/* ...other projects... */}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
