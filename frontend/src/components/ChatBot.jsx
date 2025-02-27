@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { marked } from 'marked';
-import { useNavigate } from 'react-router-dom';
 
 function ChatBot() {
-  const navigate = useNavigate();
   const { currentPage, currentContent } = useNavigation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -15,7 +13,7 @@ function ChatBot() {
     "What are Jean's main skills?",
     "Tell me about Jean's projects",
     "What's Jean's work experience?",
-    'How can I get in touch with Jean?',
+    'How can I contact Jean?',
   ]);
 
   const scrollToBottom = () => {
@@ -35,8 +33,20 @@ function ChatBot() {
 
     const renderer = new marked.Renderer();
 
-    renderer.link = (href, _title, text) => {
-      return `<span class="chat-link" data-href="${href}">${text}</span>`;
+    // Updated link renderer to handle both internal and external links
+    renderer.link = (href, title, text) => {
+      if (href.startsWith('#')) {
+        // Internal link
+        return `<span class="chat-link internal-link" data-section="${href.substring(
+          1
+        )}">${text}</span>`;
+      } else if (href.startsWith('mailto:')) {
+        // Email link
+        return `<a href="${href}" class="chat-link">${text}</a>`;
+      } else {
+        // External link
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="chat-link">${text}</a>`;
+      }
     };
 
     marked.use({ renderer });
@@ -57,37 +67,16 @@ function ChatBot() {
   const parseMarkdown = (text) => {
     if (!text) return '';
     try {
-      return text.replace(
-        /\[([^\]]+)\]\(([^)]+)\)/g,
-        '<span class="chat-link" data-href="$2">$1</span>'
-      );
+      // No need for markdown parsing anymore, just return the HTML as is
+      return text;
     } catch (error) {
       console.error('Parsing error:', error);
       return text;
     }
   };
 
-  const handleLinkClick = (e) => {
-    const target = e.target;
-    if (target.classList.contains('chat-link')) {
-      e.preventDefault();
-      const href = target.getAttribute('data-href');
-      if (href && typeof href === 'string') {
-        setIsOpen(false);
-        navigate(href);
-      }
-    }
-  };
-
   const handleSuggestionClick = (suggestion) => {
     setInput(suggestion);
-  };
-
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
   };
 
   const generateResponse = async (query) => {
