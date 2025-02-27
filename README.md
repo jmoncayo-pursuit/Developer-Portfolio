@@ -42,12 +42,6 @@ cd frontend
 npm install
 npm run dev  # Runs Vite dev server
 ```
-
-
-2. **Environment Variables**
-The `.env` requirements should be expanded based on the [`AIService`](backend/services/aiService.js) and [server.js](backend/server.js):
-
-```markdown
 ## Environment Variables
 
 ### Backend `.env`:
