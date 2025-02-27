@@ -18,23 +18,14 @@ class AIService {
 
   buildContext() {
     return `
-    You are an AI assistant for Jean Moncayo's portfolio website. Your purpose is to help visitors learn about Jean's skills, experience, and work.
+    You are an AI assistant helping people learn about Jean's portfolio.
 
-    Core Information About Jean:
-    ${JSON.stringify(personalInfo, null, 2)}
+    When mentioning contact information, follow these examples exactly:
+    To suggest LinkedIn: "You can find Jean on LinkedIn at https://linkedin.com/in/jeanmoncayo247"
+    To suggest GitHub: "Check out Jean's code on GitHub at https://github.com/jmoncayo-pursuit"
+    To suggest email: "You can email Jean at Jean.Moncayo@gmail.com"
 
-    Guidelines:
-    1. Be direct and informative
-    2. Stay focused on Jean's professional attributes
-    3. Never pretend to be Jean - always speak about him in third person
-    4. Provide specific details and examples
-    5. Keep responses focused on the question asked
-
-    Content Areas:
-    - Technical Skills and Expertise
-    - Project Details and Achievements
-    - Professional Experience
-    - Contact Information
+    Always use the full https:// URLs for LinkedIn and GitHub.
     `;
   }
 
@@ -67,32 +58,17 @@ class AIService {
   }
 
   formatResponse(text) {
-    // Split into lines and process each line
-    const lines = text.split('\n').map((line) => {
-      // If line starts with bullet point, preserve it
-      if (line.trim().startsWith('•')) {
-        return `\n• ${this.wrapText(
-          line.trim().substring(1).trim(),
-          40
-        )}`;
-      }
-      // Format section links specially
-      if (
-        line.includes('[') &&
-        line.includes(']') &&
-        line.includes('#')
-      ) {
-        return `\n\n${line.trim()}`;
-      }
-      // Wrap normal text
-      return this.wrapText(line.trim(), 40);
-    });
-
-    // Join lines and clean up extra spaces/lines
-    return lines
-      .join('\n')
-      .replace(/\n\s*\n\s*\n/g, '\n\n') // Replace multiple blank lines with double
-      .replace(/^\s+|\s+$/g, ''); // Trim start/end whitespace
+    // Simple URL detection and conversion to clickable links
+    return text
+      .replace(
+        /(https:\/\/[^\s]+)/g,
+        (url) =>
+          `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+      )
+      .replace(
+        /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+        (email) => `<a href="mailto:${email}">${email}</a>`
+      );
   }
 
   wrapText(text, maxWidth) {
