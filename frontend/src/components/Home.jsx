@@ -13,17 +13,30 @@ function Home({ pageName }) {
         "Introduction and overview of Jean Moncayo's portfolio",
     });
 
-    // Add smooth scroll behavior for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document
-          .querySelector(this.getAttribute('href'))
-          .scrollIntoView({
-            behavior: 'smooth',
-          });
+    // Remove old event listeners to prevent duplicates
+    const cleanup = () => {
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.removeEventListener('click', handleSmoothScroll);
       });
+    };
+
+    // Add smooth scroll behavior for anchor links
+    const handleSmoothScroll = (e) => {
+      e.preventDefault();
+      const targetId = e.currentTarget
+        .getAttribute('href')
+        .substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', handleSmoothScroll);
     });
+
+    return cleanup;
   }, [pageName, setCurrentPage, setCurrentContent]);
 
   return (
