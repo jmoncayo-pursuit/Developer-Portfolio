@@ -1,14 +1,25 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleNavClick = (e) => {
+    setIsOpen(false);
+    const targetId = e.currentTarget
+      .getAttribute('href')
+      .substring(1);
+    const element = document.getElementById(targetId);
+    if (element) {
+      e.preventDefault();
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-95 fixed-top shadow-sm'>
       <div className='container'>
-        <Link
-          to='/'
+        <a
+          href='#'
           className='navbar-brand d-flex align-items-center gap-3'
         >
           <img
@@ -22,7 +33,7 @@ function Navbar() {
             }}
           />
           <span>Jean Moncayo's Portfolio</span>
-        </Link>
+        </a>
 
         <button
           className='navbar-toggler border-0'
@@ -43,40 +54,40 @@ function Navbar() {
         >
           <ul className='navbar-nav ms-auto'>
             <li className='nav-item'>
-              <Link
-                to='/'
+              <a
+                href='#hero'
                 className='nav-link px-3'
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavClick}
               >
                 Home
-              </Link>
+              </a>
             </li>
             <li className='nav-item'>
-              <Link
-                to='/about'
+              <a
+                href='#about'
                 className='nav-link px-3'
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavClick}
               >
                 About
-              </Link>
+              </a>
             </li>
             <li className='nav-item'>
-              <Link
-                to='/projects'
+              <a
+                href='#projects'
                 className='nav-link px-3'
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavClick}
               >
                 Projects
-              </Link>
+              </a>
             </li>
             <li className='nav-item'>
-              <Link
-                to='/contact'
+              <a
+                href='#contact'
                 className='nav-link px-3'
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavClick}
               >
                 Contact
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
