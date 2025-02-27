@@ -9,7 +9,6 @@ A professional portfolio website built with React and Vite, featuring an AI chat
 - Responsive design
 - Project showcase
 - Interactive AI chatbot
-- Contact form
 
 ## Tech Stack
 
