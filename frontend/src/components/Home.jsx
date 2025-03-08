@@ -4,6 +4,58 @@ import { useNavigation } from '../context/NavigationContext';
 function Home({ pageName }) {
   const { setCurrentPage, setCurrentContent } = useNavigation();
   const [showContactForm, setShowContactForm] = useState(false);
+  const [currentProject, setCurrentProject] = useState(0);
+
+  const projects = [
+    {
+      title: 'Vector RAG AI Travel Recommender',
+      description:
+        'AI-powered travel recommendation system using RAG (Retrieval Augmented Generation) for personalized destination suggestions.',
+      stack: ['SQL', 'GenAI','Node.js' , 'Vector DB', 'FastAPI', 'React'],
+    },
+    {
+      title: 'AI Podcaster Generator',
+      description:
+        'Generate podcast-style content with AI voices and dynamic conversations using cutting-edge language models.',
+      stack: [
+        'Node.js',
+        'ElevenLabs API',
+        'Gemini API',
+        'Express',
+        'React',
+      ],
+    },
+    {
+      title: 'AI Assisted Developer Profile',
+      description:
+        "Interactive portfolio with AI chatbot integration using Google's Gemini for dynamic visitor interaction.",
+      stack: ['React', 'Gemini API', 'Bootstrap', 'Express'],
+    },
+    {
+      title: 'Mentorship Volunteer Platform',
+      description:
+        'Platform connecting aspiring developers with experienced mentors featuring real-time chat.',
+      stack: ['React', 'PostgreSQL', 'Express', 'Socket.IO'],
+    },
+    {
+      title: 'AI Assisted Backgammon Game',
+      description:
+        'Classic backgammon with AI opponent and move suggestions powered by machine learning.',
+      stack: ['React', 'Typescript', 'Node.js', 'WebGL', 
+        'Anthropic api'
+      ],
+    },
+  ];
+
+  const nextProject = () => {
+    setCurrentProject((prev) => (prev + 1) % projects.length);
+  };
+
+  const prevProject = () => {
+    setCurrentProject(
+      (prev) => (prev - 1 + projects.length) % projects.length
+    );
+  };
 
   useEffect(() => {
     setCurrentPage(pageName);
@@ -256,63 +308,55 @@ function Home({ pageName }) {
           </div>
         </section>
 
-        <section id='projects' className='projects'>
+        <section id='projects' className='projects py-5'>
           <div className='container'>
-            <div className='section-title'>
+            <div className='section-title text-center mb-5'>
               <h2>Projects</h2>
             </div>
-            <div className='projects-grid'>
-              <div className='project-card'>
-                <h3>Mentorship Volunteer Platform (MVP)</h3>
-                <p>
-                  A mentorship app connecting aspiring web developers
-                  with experienced mentors.
-                </p>
-                <div className='project-details'>
-                  <h4>Key Achievements:</h4>
-                  <ul>
-                    <li>
-                      Delivered Agile-driven features with Trello task
-                      coordination
-                    </li>
-                    <li>
-                      Engineered real-time chat using
-                      Socket.IO/Node.js
-                    </li>
-                    <li>
-                      Implemented secure JWT/bcrypt authentication
-                    </li>
-                    <li>
-                      Optimized PostgreSQL for efficient data
-                      management
-                    </li>
-                  </ul>
-                  <div className='tech-stack'>
-                    <span>React</span>
-                    <span>PostgreSQL</span>
-                    <span>Express</span>
-                    <span>Node.js</span>
+            <div className='position-relative'>
+              <div className='carousel-container'>
+                <div className='project-card text-center p-4 bg-dark text-white rounded-3 shadow'>
+                  <h3 className='mb-3'>
+                    {projects[currentProject].title}
+                  </h3>
+                  <p className='mb-4'>
+                    {projects[currentProject].description}
+                  </p>
+                  <div className='tech-stack d-flex flex-wrap justify-content-center gap-2 mb-4'>
+                    {projects[currentProject].stack.map(
+                      (tech, index) => (
+                        <span key={index} className='tech-bubble'>
+                          {tech}
+                        </span>
+                      )
+                    )}
+                  </div>
+                  <div className='project-links d-flex justify-content-center gap-3'>
+                    <a href='#' className='btn btn-outline-light'>
+                      <i className='bi bi-github me-2'></i>GitHub
+                    </a>
+                    <a href='#' className='btn btn-outline-light'>
+                      <i className='bi bi-box-arrow-up-right me-2'></i>
+                      Live Demo
+                    </a>
                   </div>
                 </div>
-                <div className='project-links'>
-                  <a
-                    href='https://github.com/yourusername/mvp-frontend'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <i className='bi bi-github'></i> GitHub
-                  </a>
-                  <a
-                    href='https://your-demo-link.com'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <i className='bi bi-box-arrow-up-right'></i> Live
-                    Demo
-                  </a>
-                </div>
               </div>
-              {/* Add more project cards as needed */}
+
+              <button
+                onClick={prevProject}
+                className='carousel-control prev'
+                aria-label='Previous project'
+              >
+                <i className='bi bi-chevron-left'></i>
+              </button>
+              <button
+                onClick={nextProject}
+                className='carousel-control next'
+                aria-label='Next project'
+              >
+                <i className='bi bi-chevron-right'></i>
+              </button>
             </div>
           </div>
         </section>
