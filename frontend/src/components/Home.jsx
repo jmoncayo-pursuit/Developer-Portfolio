@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigation } from '../context/NavigationContext';
+import TypedText from './TypedText';
 
 function Home({ pageName }) {
   const { setCurrentPage, setCurrentContent } = useNavigation();
@@ -11,7 +12,14 @@ function Home({ pageName }) {
       title: 'Vector RAG AI Travel Recommender',
       description:
         'AI-powered travel recommendation system using RAG (Retrieval Augmented Generation) for personalized destination suggestions.',
-      stack: ['SQL', 'GenAI','Node.js' , 'Vector DB', 'FastAPI', 'React'],
+      stack: [
+        'SQL',
+        'GenAI',
+        'Node.js',
+        'Vector DB',
+        'FastAPI',
+        'React',
+      ],
     },
     {
       title: 'AI Podcaster Generator',
@@ -41,8 +49,12 @@ function Home({ pageName }) {
       title: 'AI Assisted Backgammon Game',
       description:
         'Classic backgammon with AI opponent and move suggestions powered by machine learning.',
-      stack: ['React', 'Typescript', 'Node.js', 'WebGL', 
-        'Anthropic api'
+      stack: [
+        'React',
+        'Typescript',
+        'Node.js',
+        'WebGL',
+        'Anthropic api',
       ],
     },
   ];
@@ -115,12 +127,14 @@ function Home({ pageName }) {
               objectFit: 'cover',
             }}
           />
-          <h1 className='display-3 fw-bold mb-4 text-white'>
-            Jean Moncayo
-          </h1>
-          <p className='lead mb-5 text-white-50'>
-            Full Stack Developer
-          </p>
+          <div id='typed-text-container'>
+            <h1 className='display-3 fw-bold mb-4 text-white'>
+              <TypedText text='Jean Moncayo' speed={150} />
+            </h1>
+            <p className='lead mb-5 text-white-50'>
+              <TypedText text='Full Stack Developer' speed={100} />
+            </p>
+          </div>
 
           <nav className='mt-5'>
             <ul className='list-unstyled d-flex justify-content-center gap-4 flex-wrap'>
