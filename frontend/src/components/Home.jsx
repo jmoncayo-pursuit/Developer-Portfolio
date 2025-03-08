@@ -186,83 +186,19 @@ function Home({ pageName }) {
               <h2>Skills</h2>
             </div>
             <div className='skills-content'>
-              <div className='row'>
-                <div className='col-lg-6'>
-                  <div className='progress'>
-                    <span className='skill'>
-                      JavaScript/React <i className='val'>90%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '90%' }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className='progress'>
-                    <span className='skill'>
-                      Node.js/Express <i className='val'>85%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '85%' }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className='progress'>
-                    <span className='skill'>
-                      PostgreSQL <i className='val'>80%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '80%' }}
-                      ></div>
-                    </div>
-                  </div>
+              <div className='skill-bubbles'>
+                <div className='skill-bubble major'>
+                  JavaScript/React
                 </div>
-                <div className='col-lg-6'>
-                  <div className='progress'>
-                    <span className='skill'>
-                      HTML/CSS <i className='val'>95%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '95%' }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className='progress'>
-                    <span className='skill'>
-                      Git/GitHub <i className='val'>85%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '85%' }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className='progress'>
-                    <span className='skill'>
-                      RESTful APIs <i className='val'>90%</i>
-                    </span>
-                    <div className='progress-bar-wrap'>
-                      <div
-                        className='progress-bar'
-                        role='progressbar'
-                        style={{ width: '90%' }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                <div className='skill-bubble'>Node.js</div>
+                <div className='skill-bubble large'>Express</div>
+                <div className='skill-bubble medium'>PostgreSQL</div>
+                <div className='skill-bubble major'>HTML/CSS</div>
+                <div className='skill-bubble large'>Git/GitHub</div>
+                <div className='skill-bubble'>RESTful APIs</div>
+                <div className='skill-bubble medium'>TypeScript</div>
+                <div className='skill-bubble'>Bootstrap</div>
+                <div className='skill-bubble large'>SQL</div>
               </div>
             </div>
           </div>
