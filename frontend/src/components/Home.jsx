@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import TypedText from './TypedText';
+import Experience from './Experience';
+import Education from './Education'; // Import the new Education component
 
 function Home({ pageName }) {
   const { setCurrentPage, setCurrentContent } = useNavigation();
@@ -212,48 +214,9 @@ function Home({ pageName }) {
             <div className='resume-content'>
               <div className='resume-section'>
                 <h3>Professional Experience</h3>
-                <div className='resume-item'>
-                  <h4>Full Stack Web Developer Fellow</h4>
-                  <h5>2023 - Present</h5>
-                  <p>
-                    <em>Pursuit, New York, NY</em>
-                  </p>
-                  <ul>
-                    <li>
-                      Developing full-stack applications using modern
-                      JavaScript frameworks
-                    </li>
-                    <li>
-                      Building RESTful APIs with Node.js and Express
-                    </li>
-                    <li>
-                      Implementing responsive design principles and
-                      user authentication
-                    </li>
-                  </ul>
-                </div>
-                {/* Add more experience items */}
+                <Experience />
               </div>
-
-              <div className='resume-section'>
-                <h3>Education</h3>
-                <div className='resume-item'>
-                  <h4>Full Stack Web Development</h4>
-                  <h5>2023 - 2024</h5>
-                  <p>
-                    <em>Pursuit, New York, NY</em>
-                  </p>
-                  <ul>
-                    <li>
-                      Intensive 12-month software engineering
-                      fellowship
-                    </li>
-                    <li>Front-end: React, JavaScript, HTML5, CSS3</li>
-                    <li>Back-end: Node.js, Express, PostgreSQL</li>
-                  </ul>
-                </div>
-                {/* Add more education items */}
-              </div>
+              <Education /> {/* Now using the Education component */}
             </div>
           </div>
         </section>
