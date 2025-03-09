@@ -150,6 +150,14 @@ function Home({ pageName }) {
               </li>
               <li>
                 <a
+                  href='#resume' // Add the href to go to the resume section
+                  className='btn btn-outline-light rounded-pill px-4 py-2'
+                >
+                  Experience
+                </a>
+              </li>
+              <li>
+                <a
                   href='#projects'
                   className='btn btn-outline-light rounded-pill px-4 py-2'
                 >
