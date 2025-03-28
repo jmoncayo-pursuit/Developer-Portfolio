@@ -45,6 +45,18 @@ exports.handler = async function (event, context) {
       };
     }
 
+    // Debug mode if API key is missing
+    if (!process.env.GOOGLE_API_KEY) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error:
+            'API key is missing. Please check environment variables.',
+          debug: true,
+        }),
+      };
+    }
+
     const body = JSON.parse(event.body);
     const {
       message,
@@ -90,7 +102,14 @@ exports.handler = async function (event, context) {
     console.error('Error processing chat:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to process request' }),
+      body: JSON.stringify({
+        error: 'Failed to process request',
+        message: error.message,
+        stack:
+          process.env.NODE_ENV === 'development'
+            ? error.stack
+            : undefined,
+      }),
     };
   }
 };

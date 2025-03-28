@@ -41,23 +41,37 @@ const isAskingAboutInstructions = (message) => {
 };
 
 router.post('/chat', async (req, res) => {
+  console.log('Chat API hit! Processing request...');
+
   try {
+    // Log key information
+    console.log('API Key available:', !!process.env.GOOGLE_API_KEY);
+
     const {
       message,
       history = [],
       model = 'gemini-2.0-flash',
     } = req.body;
 
+    console.log('Received message:', message);
+
     // First check if the user is trying to ask about instructions
     if (isAskingAboutInstructions(message)) {
+      console.log(
+        'Detected instruction request, sending canned response'
+      );
       return res.json({
         response:
           "I'm an AI assistant designed to provide information about Jean's portfolio. I can tell you about his skills, experience, projects, or how to contact him. How can I help you learn more about Jean today?",
       });
     }
 
+    // Initialize the API with your API key
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+
     // Use the specified model (defaulting to 2.0)
     const generativeModel = genAI.getGenerativeModel({ model });
+    console.log('Model initialized:', model);
 
     // Create the chat session with history
     const chat = generativeModel.startChat({
@@ -68,14 +82,28 @@ router.post('/chat', async (req, res) => {
       systemInstruction: systemInstruction,
     });
 
+    console.log(
+      'Chat session created with history length:',
+      history.length
+    );
+
     // Send the user's message and get a response
+    console.log('Sending message to Gemini...');
     const result = await chat.sendMessage(message);
     const response = result.response.text();
+    console.log('Response received, length:', response.length);
 
     res.json({ response });
   } catch (error) {
     console.error('Error processing chat:', error);
-    res.status(500).json({ error: 'Failed to process request' });
+    res.status(500).json({
+      error: 'Failed to process request',
+      message: error.message,
+      stack:
+        process.env.NODE_ENV === 'development'
+          ? error.stack
+          : undefined,
+    });
   }
 });
 

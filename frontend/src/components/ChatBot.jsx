@@ -85,23 +85,40 @@ function ChatBot() {
 
   const generateResponse = async (query) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/chat`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: query,
-            history: messages.map((msg) => ({
-              role: msg.type === 'user' ? 'user' : 'assistant',
-              content: msg.text,
-            })),
-            model: modelVersion, // Use the updated model version
-          }),
-        }
-      );
+      console.log('API URL:', import.meta.env.VITE_API_URL); // Add this for debugging
+
+      // Fix API path based on environment
+      let apiPath = '';
+
+      // For local development, use /api/chat
+      if (import.meta.env.VITE_API_URL.includes('localhost')) {
+        apiPath = `${import.meta.env.VITE_API_URL}/api/chat`;
+      }
+      // For production, use /chat directly
+      else {
+        apiPath = `${import.meta.env.VITE_API_URL}/chat`;
+      }
+
+      console.log('Making request to:', apiPath); // Debug log
+
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: query,
+          history: messages.map((msg) => ({
+            role: msg.type === 'user' ? 'user' : 'assistant',
+            content: msg.text,
+          })),
+          model: modelVersion,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
       const data = await response.json();
 
@@ -116,7 +133,7 @@ function ChatBot() {
     } catch (error) {
       console.error('Error:', error);
       return {
-        text: "I'm sorry, I encountered an error. Please try again.",
+        text: `I'm sorry, I encountered an error: ${error.message}. Please try again later.`,
         showSuggestions: true,
       };
     }
