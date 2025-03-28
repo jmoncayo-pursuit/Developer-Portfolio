@@ -105,6 +105,30 @@ function Home({ pageName }) {
     return cleanup;
   }, [pageName, setCurrentPage, setCurrentContent]);
 
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sections.forEach((section) => {
+      section.classList.add('section-transition');
+      observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
   return (
     <>
       <section
@@ -117,6 +141,7 @@ function Home({ pageName }) {
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
         }}
+        data-aos='fade-up'
       >
         <div className='container text-center'>
           <img
@@ -178,7 +203,12 @@ function Home({ pageName }) {
       </section>
 
       <main id='main'>
-        <section id='about' className='about'>
+        <section
+          id='about'
+          className='about'
+          data-aos='fade-up'
+          data-aos-delay='100'
+        >
           <div className='container'>
             <div className='section-title'>
               <h2>About</h2>
@@ -190,7 +220,12 @@ function Home({ pageName }) {
           </div>
         </section>
 
-        <section id='skills' className='skills'>
+        <section
+          id='skills'
+          className='skills'
+          data-aos='fade-up'
+          data-aos-delay='200'
+        >
           <div className='container'>
             <div className='section-title'>
               <h2>Skills</h2>
@@ -214,7 +249,12 @@ function Home({ pageName }) {
           </div>
         </section>
 
-        <section id='resume' className='resume'>
+        <section
+          id='resume'
+          className='resume'
+          data-aos='fade-up'
+          data-aos-delay='300'
+        >
           <div className='container'>
             <div className='section-title'>
               <h2>Experience & Education</h2>
@@ -229,7 +269,12 @@ function Home({ pageName }) {
           </div>
         </section>
 
-        <section id='projects' className='projects py-5'>
+        <section
+          id='projects'
+          className='projects py-5'
+          data-aos='fade-up'
+          data-aos-delay='400'
+        >
           <div className='container'>
             <div className='section-title text-center mb-5'>
               <h2>Projects</h2>
@@ -282,7 +327,12 @@ function Home({ pageName }) {
           </div>
         </section>
 
-        <section id='contact' className='contact'>
+        <section
+          id='contact'
+          className='contact'
+          data-aos='fade-up'
+          data-aos-delay='500'
+        >
           <div className='container'>
             <div className='section-title'>
               <h2>Contact</h2>

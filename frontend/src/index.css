@@ -15,6 +15,11 @@
   --theme-primary-hover: #535bf2;
   --theme-dark: #1a1a1a;
   --theme-darker: #242424;
+
+  --dark-bg: #1a1a1a;
+  --light-text: #ffffff;
+  --muted-text: #a0a0a0;
+  --theme-primary: #4a90e2;
 }
 
 body {
@@ -1377,5 +1382,104 @@ h6,
   }
   50% {
     opacity: 0;
+  }
+}
+
+/* Resume specific styles */
+.resume-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.resume-name {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.resume-contact {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.resume-section-title {
+  color: #646cff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #646cff;
+  padding-bottom: 0.5rem;
+}
+
+.professional-experience {
+  margin-top: 2rem;
+}
+
+.experience-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.job-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #646cff;
+}
+
+.company-name {
+  font-weight: 500;
+}
+
+.job-duration {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.achievements {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.achievements li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.achievements li::before {
+  content: '•';
+  color: #646cff;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .experience-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .job-duration {
+    margin-top: 0.5rem;
+  }
+
+  .resume-contact {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
