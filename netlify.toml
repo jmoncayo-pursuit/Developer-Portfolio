@@ -2,7 +2,7 @@
   # Directory to publish (relative to root of your repo)
   publish = "frontend/dist"
   # Default build command
-  command = "cd frontend && npm install && npm run build"
+  command = "cd frontend && npm install && npm run build && cd .. && npm install @google/generative-ai"
 
 # Redirects for SPA
 [[redirects]]
@@ -24,3 +24,5 @@
 [functions]
   directory = "backend/functions"
   node_bundler = "esbuild"
+  # Mark the dependency as external
+  external_node_modules = ["@google/generative-ai"]

@@ -1,6 +1,15 @@
 {
+  "name": "developer-portfolio",
+  "version": "1.0.0",
+  "description": "Jean Moncayo's Developer Portfolio",
+  "private": true,
   "dependencies": {
     "react-router-dom": "^7.3.0",
-    "typed.js": "^2.1.0"
+    "typed.js": "^2.1.0",
+    "@google/generative-ai": "^0.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "cd frontend && npm install && cd ../backend && npm install"
   }
 }
