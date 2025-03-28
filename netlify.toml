@@ -1,0 +1,26 @@
+[build]
+  # Directory to publish (relative to root of your repo)
+  publish = "frontend/dist"
+  # Default build command
+  command = "cd frontend && npm install && npm run build"
+
+# Redirects for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables (define these in the Netlify dashboard)
+[build.environment]
+  NODE_VERSION = "18"
+
+# For handling API routes and the Node.js backend
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Functions directory for serverless functions
+[functions]
+  directory = "backend/functions"
+  node_bundler = "esbuild"

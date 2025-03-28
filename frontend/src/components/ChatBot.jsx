@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { marked } from 'marked';
+import './ChatBot.css';
 
 function ChatBot() {
   const { currentPage, currentContent } = useNavigation();
@@ -15,6 +16,9 @@ function ChatBot() {
     "What's Jean's work experience?",
     'How can I contact Jean?',
   ]);
+  const [modelVersion, setModelVersion] = useState(
+    'gemini-2.0-flash'
+  ); // Updating from 1.5 to 2.0
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -94,6 +98,7 @@ function ChatBot() {
               role: msg.type === 'user' ? 'user' : 'assistant',
               content: msg.text,
             })),
+            model: modelVersion, // Use the updated model version
           }),
         }
       );
