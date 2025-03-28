@@ -40,12 +40,23 @@ function Home({ pageName }) {
       description:
         "Interactive portfolio with AI chatbot integration using Google's Gemini for dynamic visitor interaction.",
       stack: ['React', 'Gemini API', 'Bootstrap', 'Express'],
+      links: {
+        github:
+          'https://github.com/jmoncayo-pursuit/Developer-Portfolio',
+        demo: 'https://developer-portfolio-jean.netlify.app/',
+      },
     },
     {
       title: 'Mentorship Volunteer Platform',
       description:
         'Platform connecting aspiring developers with experienced mentors featuring real-time chat.',
       stack: ['React', 'PostgreSQL', 'Express', 'Socket.IO'],
+      links: {
+        github: 'https://github.com/eivor9/mvp-frontend',
+        demo: 'https://mentorvolunteerplatform.netlify.app/',
+        upwork:
+          'https://www.upwork.com/freelancers/~0149174452cbcbbed9?p=1900772157442326528',
+      },
     },
     {
       title: 'AI Assisted Backgammon Game',
@@ -297,14 +308,42 @@ function Home({ pageName }) {
                       )
                     )}
                   </div>
-                  <div className='project-links d-flex justify-content-center gap-3'>
-                    <a href='#' className='btn btn-outline-light'>
-                      <i className='bi bi-github me-2'></i>GitHub
+
+                  {/* Modified project links with responsive classes */}
+                  <div className='project-links d-flex flex-wrap justify-content-center gap-2'>
+                    <a
+                      href={
+                        projects[currentProject].links?.github || '#'
+                      }
+                      className='btn btn-outline-light btn-sm btn-responsive'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <i className='bi bi-github me-1 me-sm-2'></i>
+                      <span className='btn-text'>GitHub</span>
                     </a>
-                    <a href='#' className='btn btn-outline-light'>
-                      <i className='bi bi-box-arrow-up-right me-2'></i>
-                      Live Demo
+                    <a
+                      href={
+                        projects[currentProject].links?.demo || '#'
+                      }
+                      className='btn btn-outline-light btn-sm btn-responsive'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <i className='bi bi-box-arrow-up-right me-1 me-sm-2'></i>
+                      <span className='btn-text'>Live Demo</span>
                     </a>
+                    {projects[currentProject].links?.upwork && (
+                      <a
+                        href={projects[currentProject].links.upwork}
+                        className='btn btn-outline-light btn-sm btn-responsive'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <i className='bi bi-briefcase me-1 me-sm-2'></i>
+                        <span className='btn-text'>Upwork</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>

@@ -37,3 +37,8 @@ yarn-error.log*
 /backend/config/personalData.js
 /backend/config/resumeData.js
 Template/
+
+# Private files
+TODO.md
+NOTES.md
+*.private.*
