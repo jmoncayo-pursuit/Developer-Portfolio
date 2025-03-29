@@ -1,14 +1,20 @@
 [build]
   # Directory to publish (relative to root of your repo)
   publish = "frontend/dist"
-  # Default build command
-  command = "cd frontend && npm install && npm run build && cd .. && npm install @google/generative-ai"
+  # Default build command - Make sure backend/functions is built and deployed
+  command = "cd frontend && npm install && npm run build && cd .. && npm install @google/generative-ai && cp -r backend/functions/* netlify/functions/ || mkdir -p netlify/functions && cp -r backend/functions/* netlify/functions/"
 
-# Redirects for API endpoints to functions
+# Explicitly create a redirect for the chat endpoint
 [[redirects]]
   from = "/api/chat"
   to = "/.netlify/functions/chat"
   status = 200
+
+[[redirects]]
+  from = "/.netlify/functions/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+  force = true
 
 # Redirects for SPA
 [[redirects]]
@@ -22,7 +28,7 @@
 
 # Functions directory for serverless functions
 [functions]
-  directory = "backend/functions"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
   # Mark the dependency as external
   external_node_modules = ["@google/generative-ai"]
