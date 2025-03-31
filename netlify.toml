@@ -1,20 +1,14 @@
 [build]
   # Directory to publish (relative to root of your repo)
   publish = "frontend/dist"
-  # Default build command - Make sure backend/functions is built and deployed
-  command = "cd frontend && npm install && npm run build && cd .. && npm install @google/generative-ai && cp -r backend/functions/* netlify/functions/ || mkdir -p netlify/functions && cp -r backend/functions/* netlify/functions/"
+  # New build command that creates a VERSION file to force redeployment
+  command = "echo \"Version: $(date)\" > VERSION && rm -rf netlify/functions && mkdir -p netlify/functions && cp -r backend/functions/* netlify/functions/ && cd frontend && npm install && npm run build && cd .. && npm install @google/generative-ai"
 
 # Explicitly create a redirect for the chat endpoint
 [[redirects]]
   from = "/api/chat"
   to = "/.netlify/functions/chat"
   status = 200
-
-[[redirects]]
-  from = "/.netlify/functions/chat"
-  to = "/.netlify/functions/chat"
-  status = 200
-  force = true
 
 # Redirects for SPA
 [[redirects]]
@@ -25,6 +19,8 @@
 # Environment variables (define these in the Netlify dashboard)
 [build.environment]
   NODE_VERSION = "18"
+  NETLIFY_USE_YARN = "false"
+  NETLIFY_CACHE_FUNCTIONS = "false"
 
 # Functions directory for serverless functions
 [functions]
@@ -32,3 +28,8 @@
   node_bundler = "esbuild"
   # Mark the dependency as external
   external_node_modules = ["@google/generative-ai"]
+  included_files = ["VERSION"]  # Include the version file
+
+# Force Netlify to use the latest code, not cached versions
+[build.processing]
+  skip_processing = false

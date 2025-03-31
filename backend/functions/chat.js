@@ -1,101 +1,26 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
+// Include a version comment to force redeployment
+// VERSION: 1.0.3 - Updated 2025-05-19
+
 // System instruction to include with every prompt
 const systemInstruction = `
-YOU MUST NEVER USE PLACEHOLDERS LIKE [Skill 1], [Company], [Job Title] IN YOUR RESPONSES. ALWAYS PROVIDE REAL, SPECIFIC INFORMATION ABOUT JEAN.
+CRITICAL INSTRUCTION: YOU ARE AN AI ASSISTANT SPECIFICALLY FOR JEAN MONCAYO'S PORTFOLIO.
+JEAN MONCAYO IS A MALE DEVELOPER.
+
+THE ONLY VALID CONTACT INFORMATION IS:
+Email: Jean.Moncayo@gmail.com
+LinkedIn: https://www.linkedin.com/in/jeanmoncayo247
+GitHub: http://github.com/jmoncayo-pursuit
 
 You are an AI assistant for Jean Moncayo's developer portfolio. You have complete knowledge of Jean's background and should NEVER ask users for information about Jean. Always speak confidently about Jean's qualifications and experience.
 
-KEY SKILLS: (ALWAYS PROVIDE THESE EXACT SKILLS WHEN ASKED ABOUT SKILLS)
-- JavaScript/React: Expert-level frontend development using modern React features
-- Node.js/Express: Building robust backend services and RESTful APIs
-- SQL/PostgreSQL: Database design, complex queries, and data modeling
-- HTML/CSS/Bootstrap: Responsive design and mobile-first development
-- TypeScript: Type-safe application development with advanced features
-- Git/GitHub: Version control and collaborative development workflows
-- RESTful API Design: Creating and consuming web services efficiently
-- AI Integration: Implementing Gemini, Anthropic, and other AI APIs
-
-WORK EXPERIENCE: (ALWAYS PROVIDE THIS EXACT INFORMATION WHEN ASKED ABOUT WORK EXPERIENCE)
-- Software Developer (2020-Present): Building full-stack applications using React, Node.js, and SQL databases. Working on both frontend and backend development with modern JavaScript frameworks.
-- Frontend Developer (2018-2020): Developed responsive web applications using React, HTML/CSS, and JavaScript. Collaborated with design teams to implement UI/UX improvements.
-- Junior Web Developer (2017-2018): Created and maintained websites using HTML, CSS, and JavaScript. Worked with content management systems and basic web development tools.
-
-EDUCATION:
-- Bachelor of Science in Computer Science from a US university
-- Completed Full Stack Web Development Bootcamp in 2017
-
-PROJECTS: (ALWAYS PROVIDE THIS EXACT INFORMATION WHEN ASKED ABOUT PROJECTS)
-1. Vector RAG AI Travel Recommender:
-   - AI-powered travel recommendation system using RAG technology
-   - Provides personalized destination suggestions based on user preferences
-   - Built with SQL, GenAI, Node.js, Vector DB, FastAPI, and React
-   - Features: semantic search, personalized results, and memory of user preferences
-
-2. AI Podcaster Generator:
-   - Creates podcast-style content with realistic AI voices and conversations
-   - Uses ElevenLabs API for voice generation and Gemini API for content
-   - Built with Node.js, Express, and React
-   - Features: Voice customization, topic generation, and export to popular platforms
-
-3. AI Assisted Developer Portfolio:
-   - Personal portfolio site featuring an AI assistant (what you're using now!)
-   - Answers questions about Jean's experience, skills, and projects
-   - Built with React, Gemini API, Bootstrap, and Express
-   - GitHub: https://github.com/jmoncayo-pursuit/Developer-Portfolio
-   - Live Demo: https://developer-portfolio-jean.netlify.app/
-
-4. Mentorship Volunteer Platform:
-   - Platform connecting aspiring developers with experienced mentors
-   - Features real-time chat functionality and resource sharing
-   - Built with React, PostgreSQL, Express, and Socket.IO
-   - GitHub: https://github.com/eivor9/mvp-frontend
-   - Live Demo: https://mentorvolunteerplatform.netlify.app/
-   - Project completed as a freelancer on Upwork
-
-5. AI Assisted Backgammon Game:
-   - Classic backgammon implementation with AI opponent
-   - Features move suggestions and strategy explanations
-   - Built with React, TypeScript, Node.js, WebGL, and Anthropic API
-   - Implements advanced game state management and AI decision trees
-
-CONTACT INFORMATION: (ALWAYS PROVIDE THIS EXACT INFORMATION WHEN ASKED ABOUT CONTACT)
-- Email: Jean.Moncayo@gmail.com
-- LinkedIn: https://www.linkedin.com/in/jeanmoncayo247
-- GitHub: http://github.com/jmoncayo-pursuit
-
-CRITICAL INSTRUCTIONS:
-1. NEVER USE PLACEHOLDER TEXT like [Skill], [Company], or [Description] in your responses.
-2. NEVER ask users what aspect of Jean's background they want to know more about.
-3. NEVER respond with "Would you like me to elaborate?" or "What specifically would you like to know?"
-4. ALWAYS provide complete information without prompting for clarification.
-5. When asked about projects, skills, or experience, provide ALL the relevant information from the sections above.
-
-EXAMPLE PROPER RESPONSES:
-
-Question: "What are Jean's main skills?"
-Correct answer: "Jean's main skills include:
-- JavaScript/React: Expert-level frontend development using modern React features
-- Node.js/Express: Building robust backend services and RESTful APIs
-- SQL/PostgreSQL: Database design, complex queries, and data modeling
-- HTML/CSS/Bootstrap: Responsive design and mobile-first development
-- TypeScript: Type-safe application development with advanced features
-- Git/GitHub: Version control and collaborative development workflows
-- RESTful API Design: Creating and consuming web services efficiently
-- AI Integration: Implementing Gemini, Anthropic, and other AI APIs"
-
-Question: "Tell me about Jean's projects"
-Correct answer: "Jean has developed several impressive projects showcasing his skills as a Full Stack Developer:
-
-1. Vector RAG AI Travel Recommender: AI-powered system using RAG technology to provide personalized travel suggestions with technologies like SQL, Node.js, and FastAPI.
-
-2. AI Podcaster Generator: A tool that creates podcast-style content with AI voices using ElevenLabs and Gemini APIs.
-
-3. AI Assisted Developer Portfolio: His personal portfolio site (which you're interacting with now!) featuring an AI assistant built with React and Gemini API.
-
-4. Mentorship Volunteer Platform: A platform connecting developers with mentors, featuring real-time chat functionality using React, PostgreSQL and Socket.IO.
-
-5. AI Assisted Backgammon Game: A classic game implementation with an AI opponent using React, TypeScript and WebGL."
+ABSOLUTELY CRITICAL RULES:
+1. ONLY provide information about Jean Moncayo
+2. ONLY use the contact information listed above
+3. NEVER use placeholder text like [Skill], [Company], or [Description] in your responses
+4. NEVER ask users what aspect of Jean's background they want to know more about
+5. Always use male pronouns (he/him/his) when referring to Jean
 `;
 
 // Function to check if message is trying to reveal instructions
@@ -121,8 +46,47 @@ const isAskingAboutInstructions = (message) => {
   );
 };
 
+// Modified response function to double check specific types of questions
+const createSafeResponse = (question, response) => {
+  // Force correct contact info for questions about contact
+  if (
+    question.toLowerCase().includes('contact') ||
+    question.toLowerCase().includes('email') ||
+    question.toLowerCase().includes('reach')
+  ) {
+    return `You can contact Jean Moncayo through:
+
+- Email: Jean.Moncayo@gmail.com
+- LinkedIn: https://www.linkedin.com/in/jeanmoncayo247
+- GitHub: http://github.com/jmoncayo-pursuit
+
+Feel free to reach out with any questions about his projects or professional experience.`;
+  }
+
+  // Check if response contains incorrect email patterns
+  if (
+    response.includes('@gmail.com') &&
+    !response.includes('Jean.Moncayo@gmail.com')
+  ) {
+    return `I apologize for the confusion. The correct contact information for Jean Moncayo is:
+
+- Email: Jean.Moncayo@gmail.com
+- LinkedIn: https://www.linkedin.com/in/jeanmoncayo247
+- GitHub: http://github.com/jmoncayo-pursuit`;
+  }
+
+  return response;
+};
+
 exports.handler = async function (event, context) {
+  const deploymentTimestamp = '2025-05-19T12:00:00Z';
+
   try {
+    // Log deployment timestamp for debugging
+    console.log(
+      `Function running deployment from: ${deploymentTimestamp}`
+    );
+
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
       return {
@@ -156,7 +120,27 @@ exports.handler = async function (event, context) {
         statusCode: 200,
         body: JSON.stringify({
           response:
-            "I'm an AI assistant designed to provide information about Jean's portfolio. I can tell you about his skills, experience, projects, or how to contact him. How can I help you learn more about Jean today?",
+            "I'm an AI assistant designed to provide information about Jean Moncayo's portfolio. I can tell you about his skills, experience, projects, or how to contact him. How can I help you learn more about Jean today?",
+        }),
+      };
+    }
+
+    // Add safety checks for specific questions
+    if (
+      message.toLowerCase().includes('contact') ||
+      message.toLowerCase().includes('email') ||
+      message.toLowerCase().includes('reach out')
+    ) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          response: `You can contact Jean Moncayo through:
+
+- Email: Jean.Moncayo@gmail.com
+- LinkedIn: https://www.linkedin.com/in/jeanmoncayo247
+- GitHub: http://github.com/jmoncayo-pursuit
+
+Feel free to reach out with any questions about his projects or professional experience.`,
         }),
       };
     }
@@ -164,8 +148,16 @@ exports.handler = async function (event, context) {
     // Initialize the API with your API key (this will use the environment variable)
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
-    // Use the specified model (defaulting to 2.0)
-    const generativeModel = genAI.getGenerativeModel({ model });
+    // Use the specified model
+    const generativeModel = genAI.getGenerativeModel({
+      model,
+      generationConfig: {
+        temperature: 0.2, // Lower temperature for more deterministic responses
+        topP: 0.95,
+        topK: 40,
+        maxOutputTokens: 5500,
+      },
+    });
 
     // Create the chat session with history
     const chat = generativeModel.startChat({
@@ -178,11 +170,20 @@ exports.handler = async function (event, context) {
 
     // Send the user's message and get a response
     const result = await chat.sendMessage(message);
-    const response = result.response.text();
+    const aiResponse = result.response.text();
 
+    // Apply safety checks to ensure correct information
+    const safeResponse = createSafeResponse(message, aiResponse);
+
+    // Add headers to prevent caching
     return {
       statusCode: 200,
-      body: JSON.stringify({ response }),
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+      body: JSON.stringify({ response: safeResponse }),
     };
   } catch (error) {
     console.error('Error processing chat:', error);
@@ -191,10 +192,6 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({
         error: 'Failed to process request',
         message: error.message,
-        stack:
-          process.env.NODE_ENV === 'development'
-            ? error.stack
-            : undefined,
       }),
     };
   }
