@@ -22,18 +22,30 @@ function Home({ pageName }) {
         'FastAPI',
         'React',
       ],
+      links: {
+        github:
+          'https://github.com/jmoncayo-pursuit/rag-travel-recommendation-system',
+        // demo: 'https://vector-rag-travel.netlify.app/',
+      },
     },
     {
       title: 'AI Podcaster Generator',
       description:
-        'Generate podcast-style content with AI voices and dynamic conversations using cutting-edge language models.',
+        'Modern podcast generator that converts scripts to audio using the Speechify API. Features a React + MUI frontend, TypeScript/Express backend, multi-voice conversation builder, and accessible design.',
       stack: [
+        'React 19',
+        'TypeScript',
+        'Vite',
+        'Material UI (MUI v7)',
+        'Emotion',
         'Node.js',
-        'ElevenLabs API',
-        'Gemini API',
         'Express',
-        'React',
+        'Speechify API',
       ],
+      links: {
+        github: 'https://github.com/jmoncayo-pursuit/ai-podcaster',
+        demo: 'https://ai-podcaster-speechify.netlify.app/',
+      },
     },
     {
       title: 'AI Assisted Developer Profile',
@@ -67,8 +79,12 @@ function Home({ pageName }) {
         'Typescript',
         'Node.js',
         'WebGL',
-        'Anthropic api',
+        'Anthropic API',
       ],
+      links: {
+        github: 'https://github.com/jmoncayo-pursuit/ai-backgammon',
+        demo: 'https://ai-backgammon.netlify.app/',
+      },
     },
   ];
 
@@ -309,7 +325,6 @@ function Home({ pageName }) {
                     )}
                   </div>
 
-                  {/* Modified project links with responsive classes */}
                   <div className='project-links d-flex flex-wrap justify-content-center gap-2'>
                     <a
                       href={
@@ -322,17 +337,17 @@ function Home({ pageName }) {
                       <i className='bi bi-github me-1 me-sm-2'></i>
                       <span className='btn-text'>GitHub</span>
                     </a>
-                    <a
-                      href={
-                        projects[currentProject].links?.demo || '#'
-                      }
-                      className='btn btn-outline-light btn-sm btn-responsive'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      <i className='bi bi-box-arrow-up-right me-1 me-sm-2'></i>
-                      <span className='btn-text'>Live Demo</span>
-                    </a>
+                    {projects[currentProject].links?.demo && (
+                      <a
+                        href={projects[currentProject].links.demo}
+                        className='btn btn-outline-light btn-sm btn-responsive'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <i className='bi bi-box-arrow-up-right me-1 me-sm-2'></i>
+                        <span className='btn-text'>Live Demo</span>
+                      </a>
+                    )}
                     {projects[currentProject].links?.upwork && (
                       <a
                         href={projects[currentProject].links.upwork}
